@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Value Consulting – United States</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:    #b8933a;
+      --gold-lt: #d4aa55;
+      --dark:    #1a1712;
+      --light:   #faf8f4;
+      --light2:  #f2ede4;
+      --light3:  #e8e0d0;
+      --cream:   #3d3530;
+      --muted:   #7a6f62;
+      --border:  rgba(184,147,58,0.2);
+      --serif:   'Cormorant Garamond', Georgia, serif;
+      --sans:    'Josefin Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--light);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--gold);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 1px; background: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      background: var(--light);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 75% 50%, rgba(184,147,58,0.07), transparent),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(184,147,58,0.04), transparent);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 4.5vw, 4.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.4s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-desc {
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 440px;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.6s forwards;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.8rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--gold);
+      padding: 0.9rem 2rem;
+      border: none; cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.8s forwards;
+    }
+    .hero-cta:hover { background: var(--gold-lt); transform: translateY(-2px); }
+    .hero-cta svg { width: 14px; height: 14px; }
+
+    /* ── SLIDESHOW ── */
+    .hero-visual {
+      position: relative; z-index: 2;
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.2s 0.6s forwards;
+    }
+    .slideshow-wrap {
+      width: 360px; height: 440px;
+      position: relative;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 60px rgba(184,147,58,0.12), 0 2px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      background: var(--light2);
+    }
+    .slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.9s ease-in-out;
+    }
+    .slide.active { opacity: 1; }
+    .slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* corner brackets */
+    .corner-bracket {
+      position: absolute; width: 22px; height: 22px;
+      border-color: var(--gold); border-style: solid;
+      opacity: 0.6; z-index: 3;
+    }
+    .corner-bracket.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+    .corner-bracket.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+    .corner-bracket.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+    .corner-bracket.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+    /* progress bar */
+    .slide-progress {
+      position: absolute; bottom: 0; left: 0;
+      height: 3px; background: var(--gold);
+      animation: progress 10s linear infinite;
+      z-index: 4;
+    }
+    @keyframes progress {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+    /* dots */
+    .slide-dots {
+      position: absolute; bottom: 14px; right: 14px;
+      display: flex; gap: 6px; z-index: 4;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.7);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .dot.active { background: var(--gold); border-color: var(--gold); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 0 3rem; margin: 1rem 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+    .divider-icon { color: var(--gold); font-size: 1rem; }
+
+    /* ── ACRONYM ── */
+    .acronym-section {
+      padding: 6rem 3rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+      background: var(--light2);
+      position: relative;
+    }
+    .acronym-section::before {
+      content: ''; position: absolute; top: 0; left: 3rem; right: 3rem;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+    .section-tag {
+      font-size: 0.62rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 300; line-height: 1.2; margin-bottom: 1.5rem; color: var(--dark);
+    }
+    .section-body {
+      font-size: 0.84rem; line-height: 1.95; color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .acronym-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    .acronym-card {
+      background: var(--light); border: 1px solid var(--border);
+      padding: 1.6rem; position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .acronym-card:hover {
+      border-color: var(--gold); transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(184,147,58,0.1);
+    }
+    .acronym-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%; background: var(--gold);
+      transform: scaleY(0); transform-origin: top; transition: transform 0.3s;
+    }
+    .acronym-card:hover::before { transform: scaleY(1); }
+    .acronym-letter { font-family: var(--serif); font-size: 2.5rem; font-weight: 600; color: var(--gold); line-height: 1; margin-bottom: 0.4rem; }
+    .acronym-word { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dark); margin-bottom: 0.5rem; }
+    .acronym-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── REPAIR ── */
+    .repair-section { padding: 6rem 3rem; background: var(--light); }
+    .repair-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .repair-img-frame {
+      width: 100%; padding-top: 110%;
+      background: var(--light2);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .repair-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .repair-icon {
+      width: 90px; height: 90px; border-radius: 50%;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.8);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .repair-icon svg { width: 44px; height: 44px; stroke: var(--gold); fill: none; stroke-width: 1.2; }
+    .repair-badge {
+      position: absolute; top: -1rem; right: -1rem;
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--gold); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      animation: spinSlow 20s linear infinite;
+    }
+    .repair-badge span { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; font-weight: 600; line-height: 1.4; }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    .services-list { list-style: none; margin: 2rem 0; display: flex; flex-direction: column; gap: 1rem; }
+    .services-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+    .services-list li::before { content: '◆'; color: var(--gold); font-size: 0.5rem; flex-shrink: 0; margin-top: 4px; }
+    .cta-link {
+      display: inline-flex; align-items: center; gap: 0.8rem;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold); padding: 0.85rem 1.8rem;
+      transition: background 0.3s, color 0.3s;
+    }
+    .cta-link:hover { background: var(--gold); color: #fff; }
+
+    /* ── PILLARS ── */
+    .bg-section {
+      padding: 6rem 3rem; background: var(--light2); text-align: center;
+      position: relative;
+    }
+    .bg-section::before, .bg-section::after {
+      content: ''; position: absolute; left: 3rem; right: 3rem; height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+    }
+    .bg-section::before { top: 0; } .bg-section::after { bottom: 0; }
+    .bg-pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 4rem; }
+    .pillar {
+      padding: 2.5rem 2rem; border: 1px solid var(--border); background: var(--light);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .pillar:hover { border-color: rgba(184,147,58,0.5); box-shadow: 0 8px 24px rgba(184,147,58,0.08); }
+    .pillar-icon { font-size: 2rem; margin-bottom: 1.2rem; }
+    .pillar-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: var(--dark); margin-bottom: 0.8rem; }
+    .pillar-body { font-size: 0.8rem; color: var(--muted); line-height: 1.8; }
+
+    /* ── FOOTER ── */
+    footer { padding: 4rem 3rem 2rem; background: var(--dark); }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .footer-brand { font-family: var(--serif); font-size: 1.8rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem; letter-spacing: 0.08em; }
+    .footer-tagline { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+    .footer-email { font-size: 0.78rem; color: rgba(255,255,255,0.4); transition: color 0.25s; }
+    .footer-email:hover { color: var(--gold); }
+    .footer-col-title { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+    .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.4); transition: color 0.25s; display: flex; align-items: center; gap: 0.5rem; }
+    .footer-links a::before { content: '→'; font-size: 0.65rem; color: var(--gold); }
+    .footer-links a:hover { color: rgba(255,255,255,0.9); }
+    .social-links { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .social-link { width: 38px; height: 38px; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; transition: border-color 0.25s, background 0.25s; }
+    .social-link:hover { border-color: var(--gold); background: rgba(184,147,58,0.15); }
+    .social-link svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.4); transition: fill 0.25s; }
+    .social-link:hover svg { fill: var(--gold); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; font-size: 0.72rem; color: rgba(255,255,255,0.2); flex-wrap: wrap; gap: 1rem; }
+
+    /* ── Animations ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+      .hero-visual { margin-top: 3rem; }
+      .slideshow-wrap { width: 100%; max-width: 360px; }
+      .acronym-section { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+      .repair-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .repair-section { padding: 4rem 1.5rem; }
+      .bg-section { padding: 4rem 1.5rem; }
+      .bg-pillars { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 28 28" width="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="12" stroke="#b8933a" stroke-width="1.2"/>
+        <circle cx="14" cy="14" r="8" stroke="#b8933a" stroke-width="0.7" opacity="0.4"/>
+        <line x1="14" y1="5" x2="14" y2="8" stroke="#b8933a" stroke-width="1.5"/>
+        <line x1="14" y1="20" x2="14" y2="23" stroke="#b8933a" stroke-width="1.5"/>
+        <line x1="5" y1="14" x2="8" y2="14" stroke="#b8933a" stroke-width="1.5"/>
+        <line x1="20" y1="14" x2="23" y2="14" stroke="#b8933a" stroke-width="1.5"/>
+        <line x1="14" y1="14" x2="14" y2="9" stroke="#b8933a" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="14" y1="14" x2="17" y2="13" stroke="#b8933a" stroke-width="0.9" stroke-linecap="round"/>
+        <circle cx="14" cy="14" r="1" fill="#b8933a"/>
+      </svg>
+      Premium Value Consulting
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#about">Projects</a></li>
+      <li><a href="#workspace">Work Space</a></li>
+      <li><a href="#repair">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Adding value to customers</p>
+      <h1 class="hero-title">
+        "Shaping world for a ,<br>One <em>better tomorrow</em><br>."
+      </h1>
+      <p class="hero-desc">
+        We deal with people; not just technologies or their professional skills, but we value people FIRST. JC2 is a relationship-driven woman-owned recruitment agency offering a personal approach to job hunting.
+        Whether you are a company who is searching for the right candidate to bring on board, or a candidate seeking a company that suits your career needs, JC2 is there for you!
+      </p>
+      <a class="hero-cta" href="#repair">
+        Explore Services
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-visual">
+      <div class="slideshow-wrap" id="slideshow">
+        <div class="corner-bracket tl"></div>
+        <div class="corner-bracket tr"></div>
+        <div class="corner-bracket bl"></div>
+        <div class="corner-bracket br"></div>
+
+        <div class="slide active" id="slide-0">
+          <img src="images/Employee.jpg" alt="Employee – People" />
+        </div>
+        <div class="slide" id="slide-1">
+          <img src="images/people.jpg" alt="People Group – Group" />
+        </div>
+
+        <div class="slide-progress" id="progress-bar"></div>
+        <div class="slide-dots">
+          <div class="dot active" onclick="goToSlide(0)"></div>
+          <div class="dot" onclick="goToSlide(1)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider-icon">⧖</span></div>
+
+  <!-- ACRONYM -->
+  <section class="acronym-section" id="about">
+    <div class="reveal">
+      <p class="section-tag">The Person Behind the Name</p>
+      <h2 class="section-title">What Does<br><em style="font-style:italic;color:var(--gold)">Premium Value Consulting</em> Mean?</h2>
+      <p class="section-body">
+        Premium Value Consulting
+      </p>
+      <p class="section-body">
+        Every letter carries a purpose — a philosophy that drives every movement we touch.
+      </p>
+    </div>
+    <div class="acronym-grid reveal">
+      <div class="acronym-card">
+        <div class="acronym-letter">A</div>
+        <div class="acronym-word">Accuracy</div>
+        <div class="acronym-desc">The core of Software regulation — precise to the second, every second.</div>
+      </div>
+      <div class="acronym-card">
+        <div class="acronym-letter">P</div>
+        <div class="acronym-word">Precision</div>
+        <div class="acronym-desc">Craftsmanship defined by tolerances measured in microns.</div>
+      </div>
+      <div class="acronym-card">
+        <div class="acronym-letter">K</div>
+        <div class="acronym-word">Knowledge</div>
+        <div class="acronym-desc">Self-learning and a deep passion for the science of horology.</div>
+      </div>
+      <div class="acronym-card">
+        <div class="acronym-letter" style="color:var(--gold-lt)">X</div>
+        <div class="acronym-word">X-Factor</div>
+        <div class="acronym-desc">Innovation, experimentation, and a modern creative edge.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPAIR -->
+  <section class="repair-section" id="repair">
+    <div class="repair-inner">
+      <div class="repair-visual reveal">
+        <div class="repair-img-frame">
+          <div class="repair-overlay">
+            <div class="repair-icon">
+              <svg viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="16"/>
+                <line x1="24" y1="10" x2="24" y2="16"/>
+                <line x1="24" y1="32" x2="24" y2="38"/>
+                <line x1="10" y1="24" x2="16" y2="24"/>
+                <line x1="32" y1="24" x2="38" y2="24"/>
+                <line x1="24" y1="24" x2="24" y2="18"/>
+                <line x1="24" y1="24" x2="28" y2="22"/>
+                <circle cx="24" cy="24" r="1.5" fill="#b8933a" stroke="none"/>
+              </svg>
+            </div>
+          </div>
+          <div class="corner-bracket tl"></div>
+          <div class="corner-bracket tr"></div>
+          <div class="corner-bracket bl"></div>
+          <div class="corner-bracket br"></div>
+        </div>
+        <div class="repair-badge"><span><br>Premium Value<br>Consulting</span></div>
+      </div>
+      <div class="reveal">
+        <p class="section-tag">Software Services</p>
+        <h2 class="section-title">Restoring Timepieces<br>to Their <em style="font-style:italic;color:var(--gold)">Glory</em></h2>
+        <p class="section-body">
+          My Software — US, from Premium Value Consulting Softwarees, is your go-to destination 
+          for reliable and affordable Software repair services. We understand the 
+          value of your Software — both sentimental and financial — and strive to 
+          provide top-notch service that fits your budget.
+        </p>
+        <ul class="services-list">
+          <li>Full movement servicing and cleaning</li>
+          <li>Crystal replacement and case refinishing</li>
+          <li>Strap and bracelet adjustment or replacement</li>
+          <li>Water resistance testing and gasket replacement</li>
+          <li>Vintage Software restoration and regulation</li>
+        </ul>
+        <a class="cta-link" href="http://www.mysalesforce.in" target="_blank" rel="noopener">
+          Visit our office
+          <svg viewBox="0 0 24 24" width="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section class="bg-section" id="workspace">
+    <div class="reveal">
+      <p class="section-tag">Background & Expertise</p>
+      <h2 class="section-title" style="max-width:500px;margin:0 auto;color:var(--dark)">
+        A Multi-Disciplinary<br>Approach to the <em style="font-style:italic;color:var(--gold)">Craft</em>
+      </h2>
+    </div>
+    <div class="bg-pillars">
+      <div class="pillar reveal">
+        <div class="pillar-icon">💻</div>
+        <div class="pillar-title">IT & Technology</div>
+        <div class="pillar-body">Analytical problem-solving and systems thinking applied to the intricate logic of mechanical movements.</div>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">🔩</div>
+        <div class="pillar-title">Mechanical Engineering</div>
+        <div class="pillar-body">Deep understanding of tolerances, materials, and mechanical dynamics — essential for regulating a movement.</div>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">🏗️</div>
+        <div class="pillar-title">Construction & Build</div>
+        <div class="pillar-body">Attention to structural integrity and quality standards that translates beautifully to Softwaremaking.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Premium Value Consulting Softwarees™</div>
+        <div class="footer-tagline">"Crafting Time, One Movement at a Time."</div>
+        <a class="footer-email" href="mailto:PremiumValueConsulting@gmail.com">PremiumValueConsulting@gmail.com</a><br>
+        <a class="footer-email" href="mailto:info@PremiumValueConsulting.com" style="margin-top:0.3rem;display:inline-block;">info@PremiumValueConsulting.com</a>
+        <div class="social-links">
+          <a class="social-link" href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a class="social-link" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#about">Projects</a></li>
+          <li><a href="#workspace">Work Space</a></li>
+          <li><a href="#repair">Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="http://www.mysalesforcein" target="_blank" rel="noopener">Premium Value Consulting</a></li>
+          <li><a href="mailto:mohansaiputtagunta@gmail.com">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© Premium Value Consulting Software LLC</span>
+      <span>CIN: JDJDENFGTEMCKWTCJDO</span>
+      <span>SSN: DAGPP123112</span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Scroll Reveal ──
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Slideshow ──
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.dot');
+    const bar    = document.getElementById('progress-bar');
+
+    function goToSlide(n) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = n;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+      // restart progress bar
+      bar.style.animation = 'none';
+      bar.offsetHeight; // reflow
+      bar.style.animation = 'progress 10s linear infinite';
+    }
+
+    setInterval(() => {
+      goToSlide((current + 1) % slides.length);
+    }, 10000);
+  </script>
+</body>
+</html>
