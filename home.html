@@ -10,19 +10,20 @@
       --gold:    #b8933a;
       --gold-lt: #d4aa55;
       --dark:    #1a1712;
-      --light:   #faf8f4;
-      --light2:  #f2ede4;
-      --light3:  #e8e0d0;
+      --light:   #ffffff;
+      --light2:  #f5f5f5;
+      --light3:  #ebebeb;
       --cream:   #3d3530;
       --muted:   #7a6f62;
       --border:  rgba(184,147,58,0.2);
       --serif:   'Cormorant Garamond', Georgia, serif;
       --sans:    'Josefin Sans', sans-serif;
+      --teal:    #0d9488;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--light);
+      background: #ffffff;
       color: var(--cream);
       font-family: var(--sans);
       font-weight: 300;
@@ -37,7 +38,7 @@
       z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.4rem 3rem;
-      background: rgba(250,248,244,0.95);
+      background: rgba(255,255,255,0.97);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
     }
@@ -46,7 +47,8 @@
       font-size: 1.5rem;
       font-weight: 600;
       letter-spacing: 0.12em;
-      color: var(--gold);
+      /* ── Changed: teal color for brand text ── */
+      color: var(--teal);
       display: flex; align-items: center; gap: 0.5rem;
     }
     .nav-logo img {
@@ -55,24 +57,57 @@
     }
     .nav-links { display: flex; gap: 2.2rem; list-style: none; }
     .nav-links a {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
+      /* ── Changed: larger font-size and black color ── */
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: #000000;
+      font-weight: 400;
       transition: color 0.25s;
       position: relative;
+      cursor: pointer;
     }
     .nav-links a::after {
       content: '';
       position: absolute; bottom: -4px; left: 0; right: 0;
-      height: 1px; background: var(--gold);
+      height: 2px; background: var(--gold);
       transform: scaleX(0); transform-origin: left;
       transition: transform 0.3s;
     }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--gold); }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { transform: scaleX(1); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .hamburger span { width: 24px; height: 1px; background: var(--gold); }
+
+    /* ── MOBILE NAV DRAWER ── */
+    .mobile-nav {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255,255,255,0.98);
+      z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-size: 1.3rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #000000;
+      font-weight: 400;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .mobile-nav a:hover { color: var(--gold); }
+    .mobile-nav-close {
+      position: absolute; top: 1.6rem; right: 2rem;
+      font-size: 1.8rem; color: var(--muted); cursor: pointer; line-height: 1;
+    }
+
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
     /* ── HERO ── */
     .hero {
@@ -82,7 +117,7 @@
       align-items: center;
       padding: 8rem 3rem 4rem;
       position: relative;
-      background: var(--light);
+      background: #ffffff;
     }
     .hero-bg {
       position: absolute; inset: 0;
@@ -163,7 +198,6 @@
       object-fit: cover;
       display: block;
     }
-    /* corner brackets */
     .corner-bracket {
       position: absolute; width: 22px; height: 22px;
       border-color: var(--gold); border-style: solid;
@@ -173,29 +207,22 @@
     .corner-bracket.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
     .corner-bracket.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
     .corner-bracket.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
-    /* progress bar */
     .slide-progress {
       position: absolute; bottom: 0; left: 0;
       height: 3px; background: var(--gold);
       animation: progress 10s linear infinite;
       z-index: 4;
     }
-    @keyframes progress {
-      from { width: 0%; }
-      to   { width: 100%; }
-    }
-    /* dots */
+    @keyframes progress { from { width: 0%; } to { width: 100%; } }
     .slide-dots {
       position: absolute; bottom: 14px; right: 14px;
       display: flex; gap: 6px; z-index: 4;
     }
     .dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
+      width: 7px; height: 7px; border-radius: 50%;
       background: rgba(255,255,255,0.5);
       border: 1px solid rgba(255,255,255,0.7);
-      cursor: pointer;
-      transition: background 0.3s;
+      cursor: pointer; transition: background 0.3s;
     }
     .dot.active { background: var(--gold); border-color: var(--gold); }
 
@@ -253,7 +280,7 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
     }
     .acronym-card {
-      background: var(--light); border: 1px solid var(--border);
+      background: #ffffff; border: 1px solid var(--border);
       padding: 1.6rem; position: relative; overflow: hidden;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
     }
@@ -272,7 +299,7 @@
     .acronym-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.6; }
 
     /* ── SERVICES ── */
-    .repair-section { padding: 6rem 3rem; background: var(--light); }
+    .repair-section { padding: 6rem 3rem; background: #ffffff; }
     .repair-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
     .services-categories { display: flex; flex-direction: column; gap: 1.4rem; }
     .service-cat {
@@ -289,31 +316,6 @@
     .service-cat-items { font-size: 0.77rem; color: var(--muted); line-height: 1.8; }
     .service-cat-items li { list-style: none; display: flex; align-items: flex-start; gap: 0.5rem; }
     .service-cat-items li::before { content: '–'; color: var(--gold); flex-shrink: 0; }
-    .repair-img-frame {
-      width: 100%; padding-top: 110%;
-      background: var(--light2);
-      border: 1px solid var(--border);
-      position: relative; overflow: hidden;
-    }
-    .repair-overlay {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .repair-icon {
-      width: 90px; height: 90px; border-radius: 50%;
-      border: 1px solid var(--border); background: rgba(255,255,255,0.8);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .repair-icon svg { width: 44px; height: 44px; stroke: var(--gold); fill: none; stroke-width: 1.2; }
-    .repair-badge {
-      position: absolute; top: -1rem; right: -1rem;
-      width: 90px; height: 90px; border-radius: 50%;
-      background: var(--gold); display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      animation: spinSlow 20s linear infinite;
-    }
-    .repair-badge span { font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; font-weight: 600; line-height: 1.4; }
-    @keyframes spinSlow { to { transform: rotate(360deg); } }
     .services-list { list-style: none; margin: 2rem 0; display: flex; flex-direction: column; gap: 1rem; }
     .services-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
     .services-list li::before { content: '◆'; color: var(--gold); font-size: 0.5rem; flex-shrink: 0; margin-top: 4px; }
@@ -324,6 +326,50 @@
       transition: background 0.3s, color 0.3s;
     }
     .cta-link:hover { background: var(--gold); color: #fff; }
+    .services-img-section {
+      padding: 0 3rem 3rem;
+      background: #ffffff;
+    }
+    .services-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--light2);
+    }
+    .services-img-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .services-img-wrap:hover img { transform: scale(1.03); }
+    .services-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1rem;
+      color: var(--muted);
+    }
+    .services-img-placeholder svg { width: 48px; height: 48px; stroke: var(--gold); fill: none; stroke-width: 1; opacity: 0.6; }
+    .services-img-placeholder p { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; }
+    .services-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(26,23,18,0.45) 0%, transparent 60%);
+      display: flex; align-items: flex-end;
+      padding: 2.5rem 3rem;
+      pointer-events: none;
+    }
+    .services-img-caption {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .services-img-caption em { font-style: italic; color: var(--gold-lt); }
+    /* Corner brackets on services image */
+    .services-img-wrap .corner-bracket { z-index: 2; }
 
     /* ── INDUSTRIES ── */
     .industries-section { padding: 6rem 3rem; background: var(--light2); position: relative; }
@@ -345,9 +391,8 @@
     .industry-tag::before { content: '◆'; color: var(--gold); font-size: 0.45rem; flex-shrink: 0; }
     .industry-tag:hover { border-color: var(--gold); color: var(--dark); background: rgba(184,147,58,0.04); }
 
-    /* ── DIFFERENTIATORS / PILLARS ── */
     .bg-section {
-      padding: 6rem 3rem; background: var(--light); text-align: center;
+      padding: 6rem 3rem; background: #ffffff; text-align: center;
       position: relative;
     }
     .bg-pillars { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; margin-top: 4rem; max-width: 900px; margin-left: auto; margin-right: auto; }
@@ -362,7 +407,6 @@
     .pillar-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; color: var(--dark); margin-bottom: 0.8rem; }
     .pillar-body { font-size: 0.8rem; color: var(--muted); line-height: 1.8; }
 
-    /* ── PARTNERS ── */
     .partners-section { padding: 5rem 3rem; background: var(--dark); text-align: center; }
     .partners-tag { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
     .partners-title { font-family: var(--serif); font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 300; color: rgba(255,255,255,0.85); margin-bottom: 3rem; }
@@ -375,7 +419,6 @@
     }
     .partner-chip:hover { border-color: var(--gold); color: var(--gold); }
 
-    /* ── CTA BANNER ── */
     .cta-banner {
       padding: 5rem 3rem; background: var(--light2); text-align: center;
       border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -388,7 +431,6 @@
     .contact-item svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
     .contact-item a { color: var(--gold); }
 
-    /* ── FOOTER ── */
     footer { padding: 4rem 3rem 2rem; background: var(--dark); }
     .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .footer-brand { font-family: var(--serif); font-size: 1.8rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem; letter-spacing: 0.08em; }
@@ -398,9 +440,12 @@
     .footer-phone { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; display: block; }
     .footer-col-title { font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
     .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
-    .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.4); transition: color 0.25s; display: flex; align-items: center; gap: 0.5rem; }
-    .footer-links a::before { content: '→'; font-size: 0.65rem; color: var(--gold); }
-    .footer-links a:hover { color: rgba(255,255,255,0.9); }
+    .footer-links a, .footer-links span {
+      font-size: 0.8rem; color: rgba(255,255,255,0.4); transition: color 0.25s;
+      display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+    }
+    .footer-links a::before, .footer-links span::before { content: '→'; font-size: 0.65rem; color: var(--gold); }
+    .footer-links a:hover, .footer-links span:hover { color: rgba(255,255,255,0.9); }
     .social-links { display: flex; gap: 1rem; margin-top: 1.5rem; }
     .social-link { width: 38px; height: 38px; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; transition: border-color 0.25s, background 0.25s; }
     .social-link:hover { border-color: var(--gold); background: rgba(184,147,58,0.15); }
@@ -408,11 +453,11 @@
     .social-link:hover svg { fill: var(--gold); }
     .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 2rem; font-size: 0.72rem; color: rgba(255,255,255,0.2); flex-wrap: wrap; gap: 1rem; }
 
-    /* ── Animations ── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     /* ── MOBILE ── */
     @media (max-width: 900px) {
@@ -427,6 +472,8 @@
       .acronym-section { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
       .repair-inner { grid-template-columns: 1fr; gap: 3rem; }
       .repair-section { padding: 4rem 1.5rem; }
+      .services-img-section { padding: 0 1.5rem 2.5rem; }
+      .services-img-wrap { height: 220px; }
       .industries-section { padding: 4rem 1.5rem; }
       .industries-grid { grid-template-columns: 1fr 1fr; }
       .bg-section { padding: 4rem 1.5rem; }
@@ -443,276 +490,337 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-logo">
-      <img src="images/Logo.png" alt="IT Consulting Team" />
+    <a href="#" class="nav-logo" onclick="showPage('page-home'); return false;">
+      <img src="images/Logo.png" alt="Premium Value Consulting Logo" />
       Premium Value Consulting
     </a>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#industries">Industries</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a onclick="showPage('page-home')" data-page="page-home" class="active">Home</a></li>
+      <li><a onclick="showPage('page-about')" data-page="page-about">About</a></li>
+      <li><a onclick="showPage('page-services')" data-page="page-services">Services</a></li>
+      <li><a onclick="showPage('page-industries')" data-page="page-industries">Industries</a></li>
+      <li><a onclick="showPage('page-contact')" data-page="page-contact">Contact</a></li>
     </ul>
-    <div class="hamburger"><span></span><span></span><span></span></div>
+    <div class="hamburger" onclick="document.getElementById('mobile-nav').classList.add('open')">
+      <span></span><span></span><span></span>
+    </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <p class="hero-eyebrow">Delivering Strategic IT Excellence with Measurable Impact</p>
-      <h1 class="hero-title">
-        Transform,<br>Optimize &amp;<br><em>Scale Your Business</em>
-      </h1>
-      <p class="hero-desc">
-        Founded in 2019 by seasoned IT leaders, we combine deep industry expertise with hands-on execution to help organizations transform, optimize, and scale. Our leadership brings 50+ years of combined experience from Deloitte, Accenture, Capgemini, Cognizant, and CSC.
-      </p>
-      <a class="hero-cta" href="#services">
-        Explore Services
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <span class="stat-number">50+</span>
-          <span class="stat-label">Years Combined Experience</span>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat-item">
-          <span class="stat-number">2019</span>
-          <span class="stat-label">Founded</span>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat-item">
-          <span class="stat-number">F500</span>
-          <span class="stat-label">Client Portfolio</span>
+  <div class="mobile-nav" id="mobile-nav">
+    <span class="mobile-nav-close" onclick="document.getElementById('mobile-nav').classList.remove('open')">&times;</span>
+    <a onclick="showPage('page-home'); document.getElementById('mobile-nav').classList.remove('open')">Home</a>
+    <a onclick="showPage('page-about'); document.getElementById('mobile-nav').classList.remove('open')">About</a>
+    <a onclick="showPage('page-services'); document.getElementById('mobile-nav').classList.remove('open')">Services</a>
+    <a onclick="showPage('page-industries'); document.getElementById('mobile-nav').classList.remove('open')">Industries</a>
+    <a onclick="showPage('page-contact'); document.getElementById('mobile-nav').classList.remove('open')">Contact</a>
+  </div>
+
+  <div class="page active" id="page-home">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">Delivering Strategic IT Excellence with Measurable Impact</p>
+        <h1 class="hero-title">
+          Transform,<br>Optimize &amp;<br><em>Scale Your Business</em>
+        </h1>
+        <p class="hero-desc">
+          Founded in 2019 by seasoned IT leaders, we combine deep industry expertise with hands-on execution to help organizations transform, optimize, and scale. Our leadership brings 50+ years of combined experience from Deloitte, Accenture, Capgemini, Cognizant, and CSC.
+        </p>
+        <a class="hero-cta" onclick="showPage('page-services')" style="cursor:pointer;">
+          Explore Services
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Years Combined Experience</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-item">
+            <span class="stat-number">2019</span>
+            <span class="stat-label">Founded</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-item">
+            <span class="stat-number">F500</span>
+            <span class="stat-label">Client Portfolio</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="hero-visual">
-      <div class="slideshow-wrap" id="slideshow">
+      <div class="hero-visual">
+        <div class="slideshow-wrap" id="slideshow">
+          <div class="corner-bracket tl"></div>
+          <div class="corner-bracket tr"></div>
+          <div class="corner-bracket bl"></div>
+          <div class="corner-bracket br"></div>
+          <div class="slide active" id="slide-0">
+            <img src="images/Employee.png" alt="IT Consulting Team" />
+          </div>
+          <div class="slide" id="slide-1">
+            <img src="images/people.png" alt="Enterprise Collaboration" />
+          </div>
+          <div class="slide-progress" id="progress-bar"></div>
+          <div class="slide-dots">
+            <div class="dot active" onclick="goToSlide(0)"></div>
+            <div class="dot" onclick="goToSlide(1)"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"><span class="divider-icon">⧖</span></div>
+
+  </div><!-- /page-home -->
+
+
+  <div class="page" id="page-about">
+
+    <!-- WHO WE ARE -->
+    <section class="acronym-section">
+      <div class="reveal">
+        <p class="section-tag">Who We Are</p>
+        <h2 class="section-title">Seasoned IT Leaders,<br><em style="font-style:italic;color:var(--gold)">Global Impact</em></h2>
+        <p class="section-body">
+          Premium Value Consulting was established by two experienced IT professionals with over 50 years of combined expertise. Our leadership has held key roles at globally recognized firms such as Deloitte, Accenture, Capgemini, Cognizant, and CSC.
+        </p>
+        <p class="section-body">
+          This strong foundation enables us to deliver high-impact solutions to Fortune 500 organizations across multiple industries. Our culture blends high-performance innovation with deep-rooted empathy — operating at the intersection of ESG and DEI, ensuring our global impact is both sustainable and just.
+        </p>
+      </div>
+      <div class="acronym-grid reveal">
+        <div class="acronym-card">
+          <div class="acronym-letter">✦</div>
+          <div class="acronym-word">People First</div>
+          <div class="acronym-desc">We measure our success by the growth and well-being of the individuals we serve.</div>
+        </div>
+        <div class="acronym-card">
+          <div class="acronym-letter">✦</div>
+          <div class="acronym-word">Inclusive Innovation</div>
+          <div class="acronym-desc">The best ideas come from diverse voices and a culture of belonging.</div>
+        </div>
+        <div class="acronym-card">
+          <div class="acronym-letter">✦</div>
+          <div class="acronym-word">Collaborative Excellence</div>
+          <div class="acronym-desc">We don't just work for clients — we solve challenges with them.</div>
+        </div>
+        <div class="acronym-card">
+          <div class="acronym-letter" style="color:var(--gold-lt)">✦</div>
+          <div class="acronym-word">Growth Mindset</div>
+          <div class="acronym-desc">We champion continuous learning to stay at the forefront of global impact.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-section">
+      <div class="reveal">
+        <p class="section-tag">Our Differentiators</p>
+        <h2 class="section-title" style="max-width:520px;margin:0 auto;color:var(--dark)">
+          Why Choose<br><em style="font-style:italic;color:var(--gold)">Premium Value Consulting</em>
+        </h2>
+      </div>
+      <div class="bg-pillars">
+        <div class="pillar reveal">
+          <div class="pillar-check">✔</div>
+          <div class="pillar-title">Proven Enterprise Experience</div>
+          <div class="pillar-body">Trusted by Fortune 500 companies for complex, high-stakes programs that demand precision and reliability.</div>
+        </div>
+        <div class="pillar reveal">
+          <div class="pillar-check">✔</div>
+          <div class="pillar-title">M&amp;A and Divestiture Expertise</div>
+          <div class="pillar-body">We excel in managing the complexities of mergers, acquisitions, and divestitures — ensuring seamless transitions and continuity.</div>
+        </div>
+        <div class="pillar reveal">
+          <div class="pillar-check">✔</div>
+          <div class="pillar-title">Collaborative Delivery Model</div>
+          <div class="pillar-body">We work closely with business users, IT teams, and infrastructure groups to ensure alignment and success.</div>
+        </div>
+        <div class="pillar reveal">
+          <div class="pillar-check">✔</div>
+          <div class="pillar-title">Matrix Environment Excellence</div>
+          <div class="pillar-body">Experienced in coordinating cross-functional teams and managing multi-vendor ecosystems for seamless outcomes.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRATEGIC PARTNERS -->
+    <section class="partners-section">
+      <p class="partners-tag">Strategic Partnerships &amp; Ecosystem</p>
+      <h2 class="partners-title reveal">
+        Collaborating with the World's<br>Leading <em style="font-style:italic;color:var(--gold)">Consulting Firms</em>
+      </h2>
+      <div class="partners-grid reveal">
+        <div class="partner-chip">KPMG</div>
+        <div class="partner-chip">EY</div>
+        <div class="partner-chip">PwC</div>
+        <div class="partner-chip">Accenture</div>
+        <div class="partner-chip">Capgemini</div>
+        <div class="partner-chip">IBM</div>
+        <div class="partner-chip">Infosys</div>
+        <div class="partner-chip">TCS</div>
+      </div>
+    </section>
+
+  </div><!-- /page-about -->
+
+
+  <div class="page" id="page-services">
+
+    <section class="services-img-section" style="padding-top:6rem;">
+      <div class="services-img-wrap">
+        <!-- Corner brackets for decorative framing -->
         <div class="corner-bracket tl"></div>
         <div class="corner-bracket tr"></div>
         <div class="corner-bracket bl"></div>
         <div class="corner-bracket br"></div>
+        <img
+          id="services-banner-img"
+          src="images/Services.png"
+          alt="Our Services"
+          onerror="this.style.display='none'; document.getElementById('services-img-fallback').style.display='flex';"
+        />
 
-        <div class="slide active" id="slide-0">
-          <img src="images/Employee.jpg" alt="IT Consulting Team" />
+        <!-- Fallback placeholder shown if image is not found -->
+        <div class="services-img-placeholder" id="services-img-fallback" style="display:none;">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <p>Place your services image here</p>
+          <p style="font-size:0.68rem;opacity:0.6;">Set src="images/your-image.jpg" on the &lt;img&gt; tag above</p>
         </div>
-        <div class="slide" id="slide-1">
-          <img src="images/people.jpg" alt="Enterprise Collaboration" />
-        </div>
 
-        <div class="slide-progress" id="progress-bar"></div>
-        <div class="slide-dots">
-          <div class="dot active" onclick="goToSlide(0)"></div>
-          <div class="dot" onclick="goToSlide(1)"></div>
+        <!-- Overlay caption -->
+        <div class="services-img-overlay">
+          <div class="services-img-caption">
+            End-to-End IT Solutions<br><em>That Drive Real Outcomes</em>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="divider"><span class="divider-icon">⧖</span></div>
+    <section class="repair-section" style="padding-top:3rem;">
+      <div class="repair-inner">
+        <div class="reveal">
+          <p class="section-tag">Our Services</p>
+          <h2 class="section-title">Comprehensive IT<br>Solutions Aligned With<br><em style="font-style:italic;color:var(--gold)">Your Strategy</em></h2>
+          <p class="section-body">
+            From ERP transformations to managed services and M&amp;A support, we deliver end-to-end solutions that align technology with business strategy — ensuring every engagement delivers measurable value.
+          </p>
+          <ul class="services-list">
+            <li>Implementation &amp; Application Support</li>
+            <li>IT &amp; Business Transformation</li>
+            <li>Program &amp; Project Management</li>
+            <li>Operational Optimization</li>
+            <li>Strategic Advisory</li>
+            <li>Mergers &amp; Acquisitions (M&amp;A) Support</li>
+          </ul>
+          <a class="cta-link" onclick="showPage('page-contact')" style="cursor:pointer;">
+            Get in Touch
+            <svg viewBox="0 0 24 24" width="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
 
-  <!-- WHO WE ARE -->
-  <section class="acronym-section" id="about">
-    <div class="reveal">
-      <p class="section-tag">Who We Are</p>
-      <h2 class="section-title">Seasoned IT Leaders,<br><em style="font-style:italic;color:var(--gold)">Global Impact</em></h2>
-      <p class="section-body">
-        Premium Value Consulting was established by two experienced IT professionals with over 50 years of combined expertise. Our leadership has held key roles at globally recognized firms such as Deloitte, Accenture, Capgemini, Cognizant, and CSC.
-      </p>
-      <p class="section-body">
-        This strong foundation enables us to deliver high-impact solutions to Fortune 500 organizations across multiple industries. Our culture blends high-performance innovation with deep-rooted empathy — operating at the intersection of ESG and DEI, ensuring our global impact is both sustainable and just.
-      </p>
-    </div>
-    <div class="acronym-grid reveal">
-      <div class="acronym-card">
-        <div class="acronym-letter">✦</div>
-        <div class="acronym-word">People First</div>
-        <div class="acronym-desc">We measure our success by the growth and well-being of the individuals we serve.</div>
+        <div class="services-categories reveal">
+          <div class="service-cat">
+            <div class="service-cat-title"><span>🏢</span> Enterprise Applications &amp; ERP</div>
+            <ul class="service-cat-items">
+              <li>ERP Implementations, Enhancements &amp; Upgrades (SAP S/4HANA, Oracle, Microsoft Dynamics, Navision)</li>
+              <li>Software &amp; Application Services</li>
+              <li>Application Management Support (AMS)</li>
+            </ul>
+          </div>
+          <div class="service-cat">
+            <div class="service-cat-title"><span>☁️</span> Cloud, Infrastructure &amp; Data</div>
+            <ul class="service-cat-items">
+              <li>Cloud &amp; Managed Services</li>
+              <li>Infrastructure Services</li>
+              <li>Database Management</li>
+            </ul>
+          </div>
+          <div class="service-cat">
+            <div class="service-cat-title"><span>📊</span> Consulting &amp; Strategy</div>
+            <ul class="service-cat-items">
+              <li>IT Consulting &amp; Strategic Planning</li>
+              <li>Business Process Support</li>
+              <li>Audit &amp; Compliance Support</li>
+            </ul>
+          </div>
+          <div class="service-cat">
+            <div class="service-cat-title"><span>⚙️</span> Operations &amp; Managed Services</div>
+            <ul class="service-cat-items">
+              <li>Managed Services &amp; Outsourcing (BPO)</li>
+              <li>Vendor Management</li>
+            </ul>
+          </div>
+          <div class="service-cat">
+            <div class="service-cat-title"><span>🔄</span> Transformation &amp; Corporate Actions</div>
+            <ul class="service-cat-items">
+              <li>Mergers &amp; Acquisitions (M&amp;A)</li>
+              <li>Divestitures</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="acronym-card">
-        <div class="acronym-letter">✦</div>
-        <div class="acronym-word">Inclusive Innovation</div>
-        <div class="acronym-desc">The best ideas come from diverse voices and a culture of belonging.</div>
-      </div>
-      <div class="acronym-card">
-        <div class="acronym-letter">✦</div>
-        <div class="acronym-word">Collaborative Excellence</div>
-        <div class="acronym-desc">We don't just work for clients — we solve challenges with them.</div>
-      </div>
-      <div class="acronym-card">
-        <div class="acronym-letter" style="color:var(--gold-lt)">✦</div>
-        <div class="acronym-word">Growth Mindset</div>
-        <div class="acronym-desc">We champion continuous learning to stay at the forefront of global impact.</div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SERVICES -->
-  <section class="repair-section" id="services">
-    <div class="repair-inner">
+  </div><!-- /page-services -->
+
+
+  <div class="page" id="page-industries">
+
+    <section class="industries-section" style="padding-top:8rem;">
+      <div class="industries-header reveal">
+        <p class="section-tag">Industry Expertise</p>
+        <h2 class="section-title" style="color:var(--dark);max-width:520px;margin:0 auto;">
+          Deep Domain Knowledge<br>Across <em style="font-style:italic;color:var(--gold)">Key Sectors</em>
+        </h2>
+      </div>
+      <div class="industries-grid reveal">
+        <div class="industry-tag">Oil &amp; Gas</div>
+        <div class="industry-tag">Chemicals</div>
+        <div class="industry-tag">Energy &amp; Utilities</div>
+        <div class="industry-tag">Insurance</div>
+        <div class="industry-tag">Mining</div>
+        <div class="industry-tag">Life Sciences &amp; Biotech</div>
+        <div class="industry-tag">Manufacturing</div>
+        <div class="industry-tag">Retail</div>
+        <div class="industry-tag">Telecom, Media &amp; Entertainment</div>
+      </div>
+    </section>
+
+  </div><!-- /page-industries -->
+
+
+  <div class="page" id="page-contact">
+
+    <section class="cta-banner" style="min-height:calc(100vh - 110px); display:flex; align-items:center; justify-content:center; flex-direction:column;">
       <div class="reveal">
-        <p class="section-tag">Our Services</p>
-        <h2 class="section-title">End-to-End IT<br>Solutions That Drive<br><em style="font-style:italic;color:var(--gold)">Real Outcomes</em></h2>
-        <p class="section-body">
-          From ERP transformations to managed services and M&amp;A support, we deliver end-to-end solutions that align technology with business strategy — ensuring every engagement delivers measurable value.
-        </p>
-        <ul class="services-list">
-          <li>Implementation &amp; Application Support</li>
-          <li>IT &amp; Business Transformation</li>
-          <li>Program &amp; Project Management</li>
-          <li>Operational Optimization</li>
-          <li>Strategic Advisory</li>
-          <li>Mergers &amp; Acquisitions (M&amp;A) Support</li>
-        </ul>
-        <a class="cta-link" href="#contact">
-          Get in Touch
-          <svg viewBox="0 0 24 24" width="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        <p class="section-tag">Let's Build Value Together</p>
+        <h2 class="cta-banner-title">Interested in How We Can<br>Support Your <em>Business Objectives?</em></h2>
+        <p class="cta-banner-body">Get in touch with our team today and explore how Premium Value Consulting can drive measurable outcomes for your organization.</p>
+        <div class="cta-contact-row">
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:info@premiumvalueconsulting.com">info@premiumvalueconsulting.com</a>
+          </div>
+          <div class="contact-item">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.07 6.07l1-1a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>+1 818-669-4799</span>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="services-categories reveal">
-        <div class="service-cat">
-          <div class="service-cat-title"><span>🏢</span> Enterprise Applications &amp; ERP</div>
-          <ul class="service-cat-items">
-            <li>ERP Implementations, Enhancements &amp; Upgrades (SAP S/4HANA, Oracle, Microsoft Dynamics, Navision)</li>
-            <li>Software &amp; Application Services</li>
-            <li>Application Management Support (AMS)</li>
-          </ul>
-        </div>
-        <div class="service-cat">
-          <div class="service-cat-title"><span>☁️</span> Cloud, Infrastructure &amp; Data</div>
-          <ul class="service-cat-items">
-            <li>Cloud &amp; Managed Services</li>
-            <li>Infrastructure Services</li>
-            <li>Database Management</li>
-          </ul>
-        </div>
-        <div class="service-cat">
-          <div class="service-cat-title"><span>📊</span> Consulting &amp; Strategy</div>
-          <ul class="service-cat-items">
-            <li>IT Consulting &amp; Strategic Planning</li>
-            <li>Business Process Support</li>
-            <li>Audit &amp; Compliance Support</li>
-          </ul>
-        </div>
-        <div class="service-cat">
-          <div class="service-cat-title"><span>⚙️</span> Operations &amp; Managed Services</div>
-          <ul class="service-cat-items">
-            <li>Managed Services &amp; Outsourcing (BPO)</li>
-            <li>Vendor Management</li>
-          </ul>
-        </div>
-        <div class="service-cat">
-          <div class="service-cat-title"><span>🔄</span> Transformation &amp; Corporate Actions</div>
-          <ul class="service-cat-items">
-            <li>Mergers &amp; Acquisitions (M&amp;A)</li>
-            <li>Divestitures</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div><!-- /page-contact -->
 
-  <!-- INDUSTRIES -->
-  <section class="industries-section" id="industries">
-    <div class="industries-header reveal">
-      <p class="section-tag">Industry Expertise</p>
-      <h2 class="section-title" style="color:var(--dark);max-width:520px;margin:0 auto;">
-        Deep Domain Knowledge<br>Across <em style="font-style:italic;color:var(--gold)">Key Sectors</em>
-      </h2>
-    </div>
-    <div class="industries-grid reveal">
-      <div class="industry-tag">Oil &amp; Gas</div>
-      <div class="industry-tag">Chemicals</div>
-      <div class="industry-tag">Energy &amp; Utilities</div>
-      <div class="industry-tag">Insurance</div>
-      <div class="industry-tag">Mining</div>
-      <div class="industry-tag">Life Sciences &amp; Biotech</div>
-      <div class="industry-tag">Manufacturing</div>
-      <div class="industry-tag">Retail</div>
-      <div class="industry-tag">Telecom, Media &amp; Entertainment</div>
-    </div>
-  </section>
 
-  <!-- DIFFERENTIATORS -->
-  <section class="bg-section">
-    <div class="reveal">
-      <p class="section-tag">Our Differentiators</p>
-      <h2 class="section-title" style="max-width:520px;margin:0 auto;color:var(--dark)">
-        Why Choose<br><em style="font-style:italic;color:var(--gold)">Premium Value Consulting</em>
-      </h2>
-    </div>
-    <div class="bg-pillars">
-      <div class="pillar reveal">
-        <div class="pillar-check">✔</div>
-        <div class="pillar-title">Proven Enterprise Experience</div>
-        <div class="pillar-body">Trusted by Fortune 500 companies for complex, high-stakes programs that demand precision and reliability.</div>
-      </div>
-      <div class="pillar reveal">
-        <div class="pillar-check">✔</div>
-        <div class="pillar-title">M&amp;A and Divestiture Expertise</div>
-        <div class="pillar-body">We excel in managing the complexities of mergers, acquisitions, and divestitures — ensuring seamless transitions and continuity.</div>
-      </div>
-      <div class="pillar reveal">
-        <div class="pillar-check">✔</div>
-        <div class="pillar-title">Collaborative Delivery Model</div>
-        <div class="pillar-body">We work closely with business users, IT teams, and infrastructure groups to ensure alignment and success.</div>
-      </div>
-      <div class="pillar reveal">
-        <div class="pillar-check">✔</div>
-        <div class="pillar-title">Matrix Environment Excellence</div>
-        <div class="pillar-body">Experienced in coordinating cross-functional teams and managing multi-vendor ecosystems for seamless outcomes.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STRATEGIC PARTNERS -->
-  <section class="partners-section">
-    <p class="partners-tag">Strategic Partnerships &amp; Ecosystem</p>
-    <h2 class="partners-title reveal">
-      Collaborating with the World's<br>Leading <em style="font-style:italic;color:var(--gold)">Consulting Firms</em>
-    </h2>
-    <div class="partners-grid reveal">
-      <div class="partner-chip">KPMG</div>
-      <div class="partner-chip">EY</div>
-      <div class="partner-chip">PwC</div>
-      <div class="partner-chip">Accenture</div>
-      <div class="partner-chip">Capgemini</div>
-      <div class="partner-chip">IBM</div>
-      <div class="partner-chip">Infosys</div>
-      <div class="partner-chip">TCS</div>
-    </div>
-  </section>
-
-  <!-- CTA BANNER -->
-  <section class="cta-banner" id="contact">
-    <div class="reveal">
-      <p class="section-tag">Let's Build Value Together</p>
-      <h2 class="cta-banner-title">Interested in How We Can<br>Support Your <em>Business Objectives?</em></h2>
-      <p class="cta-banner-body">Get in touch with our team today and explore how Premium Value Consulting can drive measurable outcomes for your organization.</p>
-      <div class="cta-contact-row">
-        <div class="contact-item">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <a href="mailto:support@pvconsult.net">support@pvconsult.net</a>
-        </div>
-        <div class="contact-item">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.07 6.07l1-1a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span>+1 818-669-4799</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- FOOTER — always visible -->
   <footer>
     <div class="footer-top">
       <div>
         <div class="footer-brand">Premium Value Consulting™</div>
         <div class="footer-tagline">"Delivering Strategic IT Excellence with Measurable Impact."</div>
-        <a class="footer-email" href="mailto:support@pvconsult.net">support@pvconsult.net</a>
+        <a class="footer-email" href="mailto:info@premiumvalueconsulting.com">info@premiumvalueconsulting.com</a>
         <span class="footer-phone">+1 818-669-4799</span>
         <div class="social-links">
           <a class="social-link" href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -726,11 +834,11 @@
       <div>
         <div class="footer-col-title">Navigation</div>
         <ul class="footer-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#industries">Industries</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><span onclick="showPage('page-home')">Home</span></li>
+          <li><span onclick="showPage('page-about')">About Us</span></li>
+          <li><span onclick="showPage('page-services')">Services</span></li>
+          <li><span onclick="showPage('page-industries')">Industries</span></li>
+          <li><span onclick="showPage('page-contact')">Contact</span></li>
         </ul>
       </div>
       <div>
@@ -738,7 +846,7 @@
         <ul class="footer-links">
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Our Vision &amp; Mission</a></li>
-          <li><a href="mailto:support@pvconsult.net">Contact Us</a></li>
+          <li><span onclick="showPage('page-contact')">Contact Us</span></li>
         </ul>
       </div>
     </div>
@@ -749,14 +857,34 @@
   </footer>
 
   <script>
-    // ── Scroll Reveal ──
-    const observer = new IntersectionObserver(
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // Show target page
+      const target = document.getElementById(pageId);
+      if (target) {
+        target.classList.add('active');
+        // Trigger reveal animations for elements in this page
+        target.querySelectorAll('.reveal').forEach(el => {
+          el.classList.remove('visible');
+          // Small delay so animation re-fires on each page visit
+          setTimeout(() => el.classList.add('visible'), 80);
+        });
+      }
+      // Update active nav link
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('data-page') === pageId);
+      });
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const revealObserver = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.12 }
     );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('#page-home .reveal').forEach(el => revealObserver.observe(el));
 
-    // ── Slideshow ──
     let current = 0;
     const slides = document.querySelectorAll('.slide');
     const dots   = document.querySelectorAll('.dot');
@@ -768,21 +896,21 @@
       current = n;
       slides[current].classList.add('active');
       dots[current].classList.add('active');
-      bar.style.animation = 'none';
-      bar.offsetHeight; // reflow
-      bar.style.animation = '';
+      if (bar) {
+        bar.style.animation = 'none';
+        bar.offsetHeight; // reflow
+        bar.style.animation = '';
+      }
     }
 
-    setInterval(() => {
-      goToSlide((current + 1) % slides.length);
-    }, 10000);
+    setInterval(() => { goToSlide((current + 1) % slides.length); }, 10000);
 
-    // ── Hamburger ──
-    document.querySelector('.hamburger').addEventListener('click', () => {
-      const links = document.querySelector('.nav-links');
-      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-      if (links.style.display === 'flex') {
-        links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(250,248,244,0.98);padding:1.5rem;gap:1.5rem;border-bottom:1px solid var(--border);';
+    window.addEventListener('load', () => {
+      const svcImg = document.getElementById('services-banner-img');
+      if (svcImg && (!svcImg.complete || svcImg.naturalWidth === 0)) {
+        svcImg.style.display = 'none';
+        const fallback = document.getElementById('services-img-fallback');
+        if (fallback) fallback.style.display = 'flex';
       }
     });
   </script>
